@@ -1,14 +1,15 @@
 import './assets/main.css'
 import 'vue-final-modal/style.css'
+import './composables/commons/Dialog/assets/vfm.scss'
 
-import { createApp } from 'vue'
-import { createPinia } from 'pinia'
+import {createApp} from 'vue'
+import {createPinia} from 'pinia'
 import piniaPluginPersistedstate from 'pinia-plugin-persistedstate'
 
 import App from './App.vue'
 import router from './router'
 
-import { createVfm } from 'vue-final-modal'
+import {createVfm} from 'vue-final-modal'
 
 const app = createApp(App)
 

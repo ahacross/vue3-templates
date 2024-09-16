@@ -26,7 +26,7 @@ const sortKey =
  * @param {String} options.type - 정렬에 대한 데이터 타입입니다. 'number'는 숫자 정렬, 'date'는 날짜시간 정렬입니다.
  * @param {String} options.key - 정렬할 객체의 키입니다.
  */
-export const sortFn = (orderBy, options) => {
+export const cmnSort = (orderBy, options) => {
   const mapKey = `${orderBy}${options.type ? firstUpper(options.type) : ''}`
   const key = options.key
   if (key) {

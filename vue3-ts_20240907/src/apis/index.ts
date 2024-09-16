@@ -1,22 +1,25 @@
+import type {AxiosError, AxiosRequestConfig, AxiosResponse, InternalAxiosRequestConfig} from 'axios'
 import axios from 'axios'
 
-axios.interceptors.request.use((config) => {
+type Method = 'get' | 'post' | 'put' | 'patch' | 'delete'
+
+axios.interceptors.request.use((config: InternalAxiosRequestConfig): InternalAxiosRequestConfig => {
   return config
 })
 
 axios.interceptors.response.use(
-  async (res) => {
+  async (res: AxiosResponse): Promise<any> => {
     return [200].includes(res.status) ? res.data : res
   },
-  (error) => {
+  (error: AxiosError): Promise<null> => {
     console.error(error)
     return Promise.reject(null)
   }
 )
 
 const runRequest =
-  (method) =>
-  (url, data, options = {}) =>
+  (method: Method) =>
+  (url: string, data?: any, options: AxiosRequestConfig = {}): Promise<any> =>
     axios.request({
       [method.toLowerCase() === 'get' ? 'params' : 'data']: data,
       url,
@@ -30,10 +33,16 @@ export default {
   put: runRequest('put'),
   patch: runRequest('patch'),
   delete: runRequest('delete'),
-  downloadExcel: async (method, url, data, fileNm = '', ext = '.xlsx') => {
-    const response = await runRequest(method)(url, data, { responseType: 'blob' })
-    if ([200, 204].includes(response.status)) {
-      const blob = new Blob([response.data], {
+  downloadExcel: async (
+    method: Method,
+    url: string,
+    data: any,
+    fileNm: string = '',
+    ext: string = '.xlsx'
+  ) => {
+    const res = await runRequest(method)(url, data, { responseType: 'blob' })
+    if ([200, 204].includes(res.status)) {
+      const blob = new Blob([res.data], {
         type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'
       })
       const url = window.URL.createObjectURL(blob)

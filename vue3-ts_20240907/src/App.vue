@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { RouterLink, RouterView } from 'vue-router'
+import {ModalsContainer} from 'vue-final-modal'
 import HelloWorld from './components/HelloWorld.vue'
 </script>
 
@@ -18,6 +18,7 @@ import HelloWorld from './components/HelloWorld.vue'
   </header>
 
   <RouterView />
+  <ModalsContainer />
 </template>
 
 <style scoped>
