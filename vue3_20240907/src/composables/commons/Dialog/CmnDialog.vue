@@ -1,13 +1,13 @@
 <template>
   <VueFinalModal content-transition="vfm-fade" overlay-transition="vfm-fade">
-    <CmnModal @close="onClose(false)">
+    <CmnModal :close="close">
       <template #title> {{ title }} </template>
       <slot />
       <template #buttons>
-        <button v-if="type === 'confirm'" class="point" @click="onClose(true)">
+        <button v-if="type === 'confirm'" class="point" @click="close(true)">
           {{ confirmTxt }}
         </button>
-        <button @click="onClose(false)">{{ cancelTxt }}</button>
+        <button @click="close">{{ cancelTxt }}</button>
       </template>
     </CmnModal>
   </VueFinalModal>
@@ -16,25 +16,13 @@
 <script setup>
 import { VueFinalModal } from 'vue-final-modal'
 import CmnModal from './CmnModal.vue'
-import { useModalClose } from './Dialog.js'
 
-const emits = defineEmits(['cancel'])
-const { onClose } = useModalClose(emits)
 defineProps({
-  type: {
-    type: String
-  },
-  title: {
-    type: String
-  },
-  content: {
-    type: String
-  },
-  confirmTxt: {
-    type: String
-  },
-  cancelTxt: {
-    type: String
-  }
+  type: String,
+  title: String,
+  content: String,
+  confirmTxt: String,
+  cancelTxt: String,
+  close: Function
 })
 </script>

@@ -313,6 +313,7 @@
     "$shallowRef": true,
     "$toRef": true,
     "useHistory": true,
-    "useRouteLeave": true
+    "useRouteLeave": true,
+    "cmnSort": true
   }
 }

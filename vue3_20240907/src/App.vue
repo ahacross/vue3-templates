@@ -10,7 +10,6 @@
 import { ModalsContainer } from 'vue-final-modal'
 import DefaultLayout from '@/layouts/default/DefaultLayout.vue'
 import EmptyLayout from '@/layouts/empty/EmptyLayout.vue'
-import { onBeforeRouteLeave } from 'vue-router'
 
 const layoutMap = new Map()
 layoutMap.set('default', DefaultLayout)

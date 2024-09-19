@@ -1,6 +1,6 @@
 <template>
   <div class="popup">
-    <button class="close" @click="onClickClose">
+    <button class="close" @click="close">
       <img :src="ImgClose" alt="닫기" draggable="false" />
     </button>
     <div v-if="isTitle" class="popup-header">
@@ -17,11 +17,9 @@
 <script setup>
 import ImgClose from './assets/close.svg'
 
-const emits = defineEmits(['close'])
+defineProps({
+  close: Function
+})
 
 const isTitle = computed(() => !!useSlots().title)
-
-const onClickClose = () => {
-  emits('close', false)
-}
 </script>

@@ -28,8 +28,8 @@ export default defineConfig({
         // './hooks',
         // './src/composables', // only root modules
         // './src/composables/**', // all nested modules
-        './src/composables/commons/**',
-        './src/composables'
+        'src/composables/commons/**',
+        'src/composables'
         // ...
       ],
 
