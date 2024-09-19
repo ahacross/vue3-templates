@@ -1,5 +1,5 @@
 <template>
-  <CmnModal @close="onClose">
+  <CmnModal :close="close">
     <template #title> 이거시 타이틀 </template>
     <template #default>
       <div v-for="(item, idx) in list" :key="idx">
@@ -11,28 +11,23 @@
     </template>
     <template #buttons>
       <button class="point" @click="onConfirm">확인</button>
-      <button @click="onClose">닫기</button>
+      <button @click="close">닫기</button>
     </template>
   </CmnModal>
 </template>
 
 <script setup lang="ts">
 import CmnModal from './CmnModal.vue'
-import {useModalClose} from './Dialog'
 
-// 팝업 닫기용
-const emits = defineEmits(['cancel'])
-const { onClose } = useModalClose(emits)
 // 팝업 닫을 때 onClose에 return 하고 싶은 값은 value에 넣어주면 됨
-// 여기까진 기본 설정임 변경하지 말것.
-
-const props = defineProps({
-  kakao: { type: Number }
-})
+const props = defineProps<{
+  close: (val: boolean | object | number | string | Event) => void
+  kakao: Number
+}>()
 
 const list = new Array(10).fill(null).map((n, i) => i)
 const test = ref('')
-const onConfirm = () => onClose({ naver: 7678, test: test.value })
+const onConfirm = () => props.close({ naver: 7678, test: test.value })
 
 // open 시 실행
 onMounted(() => {

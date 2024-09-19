@@ -1,5 +1,4 @@
-import { h } from 'vue'
-import { useModal, useModalSlot, VueFinalModal } from 'vue-final-modal'
+import {useModal, useModalSlot, VueFinalModal} from 'vue-final-modal'
 import CmnDialog from './CmnDialog.vue'
 
 const DialogWrap =
