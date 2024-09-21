@@ -9,23 +9,26 @@ axios.interceptors.request.use((config: InternalAxiosRequestConfig): InternalAxi
 
 axios.interceptors.response.use(
   async (res: AxiosResponse): Promise<any> => {
-    return [200].includes(res.status) ? res.data : res
+    const { status } = res
+    return status >= 200 && status < 300 ? res.data : res
   },
-  (error: AxiosError): Promise<null> => {
-    console.error(error)
-    return Promise.reject(null)
+  (error: AxiosError): Promise<never> => {
+    console.error('API Error:', error)
+    return Promise.reject(error)
   }
 )
 
 const runRequest =
-  (method: Method) =>
-  (url: string, data?: any, options: AxiosRequestConfig = {}): Promise<any> =>
-    axios.request({
-      [method.toLowerCase() === 'get' ? 'params' : 'data']: data,
-      url,
-      method,
-      ...options
-    })
+  <T = any>(method: Method) =>
+  (url: string, data?: any, options: AxiosRequestConfig = {}): Promise<T> =>
+    axios
+      .request<T>({
+        [method.toLowerCase() === 'get' ? 'params' : 'data']: data,
+        url,
+        method,
+        ...options
+      } as AxiosRequestConfig)
+      .then((response) => response as unknown as T)
 
 export default {
   get: runRequest('get'),
@@ -40,19 +43,27 @@ export default {
     fileNm: string = '',
     ext: string = '.xlsx'
   ) => {
-    const res = await runRequest(method)(url, data, { responseType: 'blob' })
-    if ([200, 204].includes(res.status)) {
-      const blob = new Blob([res.data], {
+    try {
+      const response = await runRequest<Blob>(method)(url, data, {
+        responseType: 'blob'
+      })
+      const blob = new Blob([response], {
         type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'
       })
-      const url = window.URL.createObjectURL(blob)
+
+      const downloadUrl = window.URL.createObjectURL(blob)
       const link = document.createElement('a')
-      link.href = url
-      link.setAttribute('download', `${(fileNm === '' ? new Date().toISOString() : fileNm) + ext}`)
+      link.href = downloadUrl
+      link.download = `${(fileNm === '' ? new Date().toISOString() : fileNm) + ext}`
       document.body.appendChild(link)
       link.click()
       document.body.removeChild(link)
+      window.URL.revokeObjectURL(downloadUrl)
+
       return blob
+    } catch (error) {
+      console.error('Download Error:', error)
+      return undefined
     }
   }
 }
