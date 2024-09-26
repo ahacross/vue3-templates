@@ -1,5 +1,7 @@
 <template>
   <div>
+    <router-link to="/about">about</router-link>
+    <router-link to="/admin">admin</router-link>
     <h1>This is an about page</h1>
 
     <button @click="onAlert">alert</button>

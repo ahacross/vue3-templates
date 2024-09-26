@@ -1,9 +1,9 @@
 <template>
   <div>
     <router-link to="/">홈</router-link>
-    <router-link to="/admin">admin</router-link>
+    <router-link to="/about">about</router-link>
 
-    <h1>This is an about page</h1>
+    <h1>This is an admin page</h1>
 
     <button @click="onAlert">alert</button>
     <button @click="onConfirm">confirm</button>

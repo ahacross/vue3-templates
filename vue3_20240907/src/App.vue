@@ -1,23 +1,18 @@
 <template>
   <!-- keep-alive include: 캐시할 컴포넌트 이름, exclude: 캐시하지 않을 컴포넌트 이름, max 캐시 컴포넌트 최대 수를 지정 -->
   <keep-alive>
-    <component :is="isLayout" />
+    <component :is="layoutComponent">
+      <router-view />
+    </component>
   </keep-alive>
+
   <ModalsContainer />
 </template>
 
 <script setup>
+import layouts from '@/layouts/layouts.js'
 import { ModalsContainer } from 'vue-final-modal'
-import DefaultLayout from '@/layouts/default/DefaultLayout.vue'
-import EmptyLayout from '@/layouts/empty/EmptyLayout.vue'
 
-const layoutMap = new Map()
-layoutMap.set('default', DefaultLayout)
-layoutMap.set('empty', EmptyLayout)
-
-window.$router = useRouter()
-const $route = useRoute()
-const isLayout = computed(() => layoutMap.get($route.meta?.layout || 'default'))
+const route = useRoute()
+const layoutComponent = computed(() => layouts[route.meta?.layout || 'default'])
 </script>
-
-<style scoped></style>
